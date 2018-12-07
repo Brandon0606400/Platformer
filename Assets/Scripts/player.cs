@@ -19,6 +19,9 @@ public class Player : MonoBehaviour
     public SpriteRenderer playerSprite;
     public Collider2D playerCollider;
 
+    // Variable to keep a reference to the lives display object
+    public Lives LivesObject;
+
     // Use this for initialization
     void Start()
     {
@@ -84,14 +87,34 @@ public class Player : MonoBehaviour
     //Our own function for handling player death
     public void Kill()
     {
-        //Reset the current level to restart from the beginning
+        // Take away a life and save that chane
+        LivesObject.LoseLife();
+        LivesObject.SaveLives();
 
-        //First ask unity what the current level is
-        Scene currentLevel = SceneManager.GetActiveScene();
+        //Check if it's game over
+        bool gameOver = LivesObject.IsGameOver();
 
-        //Second, tell unity to load the current level again
-        //by passing the build index of our level
-        SceneManager.LoadScene(currentLevel.buildIndex);
+        if (gameOver == true)
+        {
+            // If it IS game over...
+            // Load the game over screen
+            SceneManager.LoadScene("GameOver");
+        }
+        else
+        {
+            // If it is NOT game over...
+            // Reset the current level to restart from the beginning 
+
+
+            //Reset the current level to restart from the beginning
+
+            //First ask unity what the current level is
+            Scene currentLevel = SceneManager.GetActiveScene();
+
+            //Second, tell unity to load the current level again
+            //by passing the build index of our level
+            SceneManager.LoadScene(currentLevel.buildIndex);
+        }
     }
 
 
